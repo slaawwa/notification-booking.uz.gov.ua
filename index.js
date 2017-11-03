@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  try to take over the world!
 // @author       slaawwa
-// @match        http://tampermonkey.net/
+// @match        https://booking.uz.gov.ua/
 // @grant        none
 // ==/UserScript==
 (function() {
@@ -133,7 +133,7 @@
             check: () => {
                 clearTimeout(app.data.timer);
                 window.$.ajax({
-                    url: 'http://booking.uz.gov.ua/purchase/search/',
+                    url: '//booking.uz.gov.ua/purchase/search/',
                     method: 'POST',
                     data: app.data.post,
                 }).done(function(res) {
