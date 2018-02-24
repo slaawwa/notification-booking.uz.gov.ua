@@ -20,15 +20,11 @@
             intervalPos: localStorage._intervalPos || (300 * 1000), // 5 min
             intervalNeg: localStorage._intervalNeg || (30 * 1000), // 30 sec
             post: {
-                station_id_from: null,
-                station_id_till: null,
-                station_from: null,
-                station_till: null,
-                date_dep: null,
-                time_dep: "00:00",
-                time_dep_till: null,
+                from: null, // '2200001' // Kyiv
+                to: null,   // '2210900' // K.Rig
+                date: null, // '2018-03-07'
+                time: null, // '20:00'
                 another_ec: 0,
-                search: null,
             },
         },
         addJQuery: (src = '//ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js') => {
@@ -52,7 +48,7 @@
         },
         sendEmail: (count) => {
             console.log('email:', app.data.email);
-            $.ajax({
+            app.$.ajax({
                 url: `https://formspree.io/${app.data.email}`, 
                 method: "POST",
                 data: {
@@ -85,17 +81,16 @@
         },
         get: {
             from: () => {
-                app.data.post.station_id_from = app.$('[name="station_id_from"]').val();
-                app.data.post.station_from = app.$('[name="station_from"]').val();
+                app.data.post.from = app.$('[name="from"]').val();
                 return app.get;
             },
             to: () => {
-                app.data.post.station_id_till = app.$('[name="station_id_till"]').val();
-                app.data.post.station_till = app.$('[name="station_till"]').val();
+                app.data.post.till = app.$('[name="to"]').val();
                 return app.get;
             },
             date: () => {
-                app.data.post.date_dep = app.$('#date_dep').val();
+                app.data.post.date = app.$('[name="date"]').val();
+                app.data.post.time = app.$('[name="time"]').val();
                 return app.get;
             },
             email: (e) => {
@@ -131,9 +126,10 @@
                 return app.set;
             },
             check: () => {
+
                 clearTimeout(app.data.timer);
                 window.$.ajax({
-                    url: '//booking.uz.gov.ua/purchase/search/',
+                    url: '//booking.uz.gov.ua/train_search/',
                     method: 'POST',
                     data: app.data.post,
                 }).done(function(res) {
@@ -150,6 +146,7 @@
                 }).error(function(err) {
                     console.info('ERR:', err);
                 });
+
                 return app.set;
             },
         },
